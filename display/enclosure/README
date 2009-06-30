@@ -1,0 +1,8 @@
+If using inkscape to view the .svg files you probably won't see anything
+because the lines are too fine.  Select them and change the stroke width to
+0.03mm or 0.3mm and they'll show up much better.  Just remember to change them
+back to 0.003mm before you send the files to Ponoko.
+
+radish.skp is a Google SketchUp file that pretty accurately represents a 3D
+model of the Radish.
+
