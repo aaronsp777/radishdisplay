@@ -5,7 +5,8 @@ This is the wongle software reference implementation written in ruby.
 How to install
 Copy everything into /usr/local/radish/bin (or run in place)
 mkdir /var/cache/radish (give rwx permissons to the user that will run it)
-cp config/feedurls.example /var/cache/radish/feedurls (and edit radio id)
+cp config/feedurls.example /var/cache/radish/feedurls (and edit radio id in lower case)
+ensure /dev/ttyUSB* or /dev/cu.usbserial-* exists and rw permissions are granted to the user that will run it
 
 How to run
 ./radio_server.rb
