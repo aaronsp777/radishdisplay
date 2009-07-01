@@ -1,0 +1,18 @@
+This is the wongle software reference implementation written in ruby.
+
+*QUICK HOWTO*
+
+How to install
+Copy everything into /usr/local/radish/bin (or run in place)
+mkdir /var/cache/radish (give rwx permissons to the user that will run it)
+cp config/feedurls.example /var/cache/radish/feedurls (and edit radio id)
+
+How to run
+./radio_server.rb
+./sign_fetcher.rb
+
+How to monitor
+mkdir /var/cache/radish
+tail -f /var/cache/radish/RadioServer.log &
+tail -f /var/cache/radish/SignFetcher.log &
+

@@ -1,0 +1,7 @@
+# Example feed urls - place in /var/cache/radish and remove file suffix
+# Format in YAML: "mac: url"
+# Typical example, but you will probably want to serve your own image.pbm files
+#
+---
+0013a200406157c3: http://radishdisplay.googlecode.com/svn/trunk/wongle/software/config/the_admiral.pbm
+0013a200407157a9: http://radishdisplay.googlecode.com/svn/trunk/wongle/software/config/the_admiral.pbm
