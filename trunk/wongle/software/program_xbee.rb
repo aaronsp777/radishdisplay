@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
++$: << File.dirname($0)
+
 require 'expect'
 require 'optparse'
 require 'connection'
@@ -50,7 +52,7 @@ module Radish
       sleep 10
       determine_baud
       send_cmd "ATBD6\r"
-      send_cmd "ATSM1\r"
+      send_cmd "ATSM0\r"
       send_cmd "ATAP1\r"
       send_cmd "ATWR\r"
       send_cmd "ATCN\r"

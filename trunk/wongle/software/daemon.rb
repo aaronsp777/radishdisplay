@@ -55,7 +55,7 @@ module Radish
 
     def redirect_to_logfile
       f = File.open logfile, 'a'
-      null = File.open '/dev/null', 'w'
+      null = File.open '/dev/null', 'w+'
       STDOUT.reopen f
       STDOUT.sync = true
       STDERR.reopen f

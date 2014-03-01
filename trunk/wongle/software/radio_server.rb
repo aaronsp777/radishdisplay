@@ -348,11 +348,16 @@ module Radish
         # determine response based on first byte
         # of request
         case rx.data[0].chr
-        when SYN : image_request rx
-        when ACK : update_state rx, 'ack'
-        when NAK : update_state rx, 'nak'
-        when CAN : update_state rx, 'can'
-        when "\0": print_timing rx
+        when SYN
+          image_request rx
+        when ACK
+          update_state rx, 'ack'
+        when NAK
+          update_state rx, 'nak'
+        when CAN
+          update_state rx, 'can'
+        when "\0"
+          print_timing rx
         else
           log rx, 'noise', {'data'=> rx.data}
           nil
