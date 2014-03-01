@@ -24,8 +24,9 @@ module Radish
 
     # finds the first usb serial device attached to the system
     def self.default_port
-      ports = Dir.glob "/dev/ttyUSB*" # linux
-      ports += Dir.glob "/dev/cu.usbserial-*" # mac
+      ports = Dir.glob "/dev/ttyUSB*" # Linux
+      ports += Dir.glob "/dev/ttyAMA*" # Raspberry Pi
+      ports += Dir.glob "/dev/cu.usbserial-*" # Mac OS X
       raise NoDevice, 'Ensure Wongle is connected', caller if ports.empty?
       return ports.sort.first
     end
