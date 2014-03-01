@@ -262,7 +262,7 @@ module Radish
         }
 
         @handler_queue << ack_handler
-        return [header[0], seq_byte, p].pack('CCa*'), ack_handler
+        return [header.bytes.first, seq_byte, p].pack('CCa*'), ack_handler
       end
 
       # Takes a sleep time in seconds and converts it to a ghetto-point
@@ -313,9 +313,9 @@ module Radish
     end
 
     def self.parse_data(data)
-      packet_class = @packet_classes[data[0]]
+      packet_class = @packet_classes[data.bytes.first]
       if !packet_class
-        puts "Received packet of unknown type #{data[0]}: " +
+        puts "Received packet of unknown type #{data.bytes.first}: " +
              data.inspect
         STDOUT.flush
         return nil
@@ -422,11 +422,11 @@ module Radish
     def read_api_packet
       packet = nil
       while !packet
-        start = @connection.read(1)[0]
+        start = @connection.read(1).bytes.first
 
         if start != START_BYTE
           puts "Expected #{START_BYTE}, got junk byte " +
-               "#{start} from wongle"
+               "#{start.inspect} from wongle"
           STDOUT.flush
           next
         end
@@ -434,7 +434,7 @@ module Radish
         length = @connection.read(2).unpack('n')[0]
 
         data = @connection.read(length)
-        check = @connection.read(1)[0]
+        check = @connection.read(1).bytes.first
 
         if Api.checksum(data) != check
           puts "Checksum calculated as #{Api.checksum(data)}, but " +

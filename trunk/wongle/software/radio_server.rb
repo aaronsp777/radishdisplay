@@ -385,8 +385,8 @@ if __FILE__ == $0
       server.wangler_uri.port = arg
     }
     opts.on("-d", "--debug [LEVEL]", Integer,
-            "Specify the debugging level (default 1)") { |arg|
-      server.debug_level = arg || 1
+            "Specify the debugging level (default 0)") { |arg|
+      server.debug_level = arg || 0
     }
     opts.on("--tty DEVICE",
             "Specify a non-default serial device " +
