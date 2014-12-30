@@ -63,9 +63,9 @@ module Radish
 
     # get our own radio address
     def read_my_addr
-      # for now, permutate the hostname
+      # for now, use the hostname
       require 'socket'
-      Socket.gethostname.unpack('H16')[0]
+      Socket.gethostname
     end
 
     def read_feedurls
@@ -83,6 +83,11 @@ module Radish
       begin
         http = Net::HTTP.new @wangler_uri.host, @wangler_uri.port
         http.read_timeout = 20
+        if @wangler_uri.scheme == 'https'
+          http.use_ssl = true
+          http.ca_path = '/etc/ssl/certs'
+          http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+        end
         res = http.request_post @wangler_uri.request_uri, sending.to_yaml
 
         case res
@@ -318,7 +323,7 @@ module Radish
     end
 
     def print_timing(rx)
-      cycles = rx.data[1] * 256 + rx.data[2]
+      cycles = rx.data.unpack('Cn')[1]
       ticks = cycles * 6 + 12
       log rx, 'timing', {
         'seconds' => ticks / 1000000.0,

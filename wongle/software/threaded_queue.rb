@@ -12,38 +12,44 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+require 'thread.rb'
 
 module Radish
   class ThreadedQueue < Array
     def initialize(*args, &block)
       @thread_running = false
       @handler_proc = block
+      @mutex = Mutex.new
       super(*args)
     end
 
     def <<(*args)
       rv = super(*args)
 
-      Thread.critical = true
+      @mutex.lock
       if !@thread_running
         @thread_running = true
-        Thread.critical = false
+        @mutex.unlock
 
         Thread.new do
           begin
-            Thread.critical = true
+            @mutex.lock
             while !empty?
-              Thread.critical = false
-              @handler_proc.call
-              Thread.critical = true
+              @mutex.unlock
+              begin
+                @handler_proc.call
+              ensure
+                @mutex.lock
+              end
             end
           ensure
             @thread_running = false
-            Thread.critical = false
+            @mutex.unlock
           end
         end  # Thread.new
+      else
+        @mutex.unlock
       end  # if
-      Thread.critical = false
 
       return rv
     end
