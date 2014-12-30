@@ -27,9 +27,11 @@ module Radish
   class MissingImage < RuntimeError; end
   class WrongImageSize < RuntimeError; end
   class NotModified < RuntimeError; end
+  class SleepInterrupted < RuntimeError; end
   class SignFetcher < Daemon
 
     MAX_AGE = 300 # how often to build new signs
+    IMAGE_SIZE_BYTES = 9611
 
     def log(string)
       puts "#{Time.now.xmlschema} #{string}"
@@ -61,9 +63,10 @@ module Radish
       filename_tmp = BASEDIR + "tmp#{$$}"
 
       # build the new image and grab the old one off of the disk
-      old_data = File.read filename rescue nil
-      
-      # don't touch the files if nothing has changed
+      # Providing number of bytes forces it to binary mode read.
+      old_data = File.read(filename, IMAGE_SIZE_BYTES) rescue nil
+
+      # don't touch the files if nothings changed
       if new_data == old_data
         log "identicial" if verbose
         return
@@ -97,7 +100,7 @@ module Radish
           return
         end
         raise MissingImage if pbm.nil? or pbm == ""
-        raise WrongImageSize if pbm.to_s.length != 9611
+        raise WrongImageSize if pbm.to_s.length != IMAGE_SIZE_BYTES
         write_image pbm, filename
 
       rescue => e
@@ -112,14 +115,18 @@ module Radish
     end
 
     def run
-      Signal.trap('HUP') { } # will allow unsleep later
+      Signal.trap('HUP') { raise SleepInterrupted }
       while true
         feedurls.each do |mac, url|
           log "#{mac}: fetch #{url}" if verbose
           do_one_sign mac, url
         end
         log "sleeping" if verbose
-        sleep MAX_AGE
+        begin
+          sleep MAX_AGE
+        rescue SleepInterrupted
+          log "Early Wakeup" if verbose
+        end
       end
     end
 
