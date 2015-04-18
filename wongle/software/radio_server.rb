@@ -54,7 +54,7 @@ module Radish
         @wangler_uri = nil
         @logentries = []
       end
-      @debug_level = 1
+      @debug_level = 0
     end
 
     def connect
