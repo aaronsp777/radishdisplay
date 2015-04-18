@@ -383,11 +383,7 @@ if __FILE__ == $0
 
     opts.on("-w", "--wangler HOST",
             "Specify an alternate wangler hostname") { |arg|
-      server.wangler_uri.host = arg
-    }
-    opts.on("-p", "--port NUM", Integer,
-            "Specify an alternate wangler port") { |arg|
-      server.wangler_uri.port = arg
+      server.wangler_uri = URI.parse arg
     }
     opts.on("-d", "--debug [LEVEL]", Integer,
             "Specify the debugging level (default 0)") { |arg|
