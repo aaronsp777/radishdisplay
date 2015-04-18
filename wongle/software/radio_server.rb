@@ -47,13 +47,8 @@ module Radish
       @tty = Connection.default_port
       @feedurls = read_feedurls
       @myaddr = read_my_addr
-      if DEFAULT_WANGLER_URL
-        @logentries = ThreadedQueue.new(&method(:sync_with_wangler))
-        @wangler_uri = URI.parse DEFAULT_WANGLER_URL
-      else
-        @wangler_uri = nil
-        @logentries = []
-      end
+      @wangler_uri = nil
+      @logentries = ThreadedQueue.new(&method(:sync_with_wangler))
       @debug_level = 0
     end
 
