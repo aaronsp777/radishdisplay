@@ -6,19 +6,16 @@
 DAEMON_PATH=/usr/local/radish/bin/radio_server.rb
 DAEMON_NAME=Radish::RadioServer
 DAEMON_LOG=/export/hda3/tmp/radishcache/RadioServer.log
+RADIO_SERVER_FLAGS=""
 # Sanity checks.
 [ -x $DAEMON_PATH ] || exit 1
-
-RADIO_SERVER_FLAGS=""
-if [ -f /etc/radish.conf ]
-  . /etc/radish.conf
-if
+[ -r /etc/radish.conf ] && . /etc/radish.conf
 
 RETVAL=0
 case "$1" in
   start)
     echo -n "Starting Radish Radio Server"
-    start-stop-daemon -c nobody:nogroup -g nogroup -u nobody --start --exec $DAEMON_PATH $RADIO_SERVER_FLAGS --quiet >/dev/null
+    start-stop-daemon -c radish:dialout -g dialout -u radish --start --exec $DAEMON_PATH $RADIO_SERVER_FLAGS --quiet >/dev/null
     RETVAL=$?
     echo "."
     ;;
