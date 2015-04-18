@@ -15,7 +15,7 @@ RETVAL=0
 case "$1" in
   start)
     echo -n "Starting Radish Radio Server"
-    start-stop-daemon -c radish:dialout -g dialout -u radish --start --exec $DAEMON_PATH $RADIO_SERVER_FLAGS --quiet >/dev/null
+    start-stop-daemon -c radish:dialout -g dialout -u radish --start --exec $DAEMON_PATH --quiet -- $RADIO_SERVER_FLAGS >/dev/null
     RETVAL=$?
     echo "."
     ;;
