@@ -28,7 +28,7 @@ module Radish
       ports += Dir.glob "/dev/ttyAMA*" # Raspberry Pi
       ports += Dir.glob "/dev/cu.usbserial-*" # Mac OS X
       raise NoDevice, 'Ensure Wongle is connected', caller if ports.empty?
-      return ports.sort.first
+      return ports.first
     end
 
     def self.default_connection
