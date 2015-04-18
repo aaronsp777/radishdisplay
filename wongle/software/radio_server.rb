@@ -60,7 +60,7 @@ module Radish
     def read_my_addr
       # for now, use the hostname
       require 'socket'
-      Socket.gethostname
+      '%s' % Socket.gethostname
     end
 
     def read_feedurls
