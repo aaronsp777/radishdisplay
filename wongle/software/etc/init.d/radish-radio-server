@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+# radish-radio:		Starts the Radish RadioServer daemon
+# $id:$
+
+DAEMON_PATH=/usr/local/radish/bin/radio_server.rb
+DAEMON_NAME=Radish::RadioServer
+DAEMON_LOG=/export/hda3/tmp/radishcache/RadioServer.log
+# Sanity checks.
+[ -x $DAEMON_PATH ] || exit 1
+
+
+
+RETVAL=0
+case "$1" in
+  start)
+    echo -n "Starting Radish Radio Server"
+    start-stop-daemon -c nobody:nogroup -g nogroup -u nobody --start --exec $DAEMON_PATH --quiet >/dev/null
+    RETVAL=$?
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping Radish Radio Server"
+    pkill -f $DAEMON_NAME
+    RETVAL=$?
+    echo "."
+  ;;
+  force-reload)
+    $0 stop
+    $0 start
+  ;;
+  restart)
+    $0 force-reload
+  ;;
+  status)
+    echo -n "Status of $(basename $0) service: "
+    if pgrep -f $DAEMON_NAME > /dev/null ; then
+      if find $DAEMON_LOG -mmin -27 | grep -q .; then
+        echo "running."
+        RETVAL=0
+      else
+        echo "borked."
+        RETVAL=2
+      fi
+    else
+      echo "not running."
+      RETVAL=3
+    fi
+  ;;
+  *)
+    echo "Usage: /etc/init.d/$(basename $0) {start|stop|force-reload|restart|status}"
+    RETVAL=1
+  ;;
+esac
+exit $RETVAL
