@@ -5,7 +5,7 @@
 
 DAEMON_PATH=/usr/local/radish/bin/radio_server.rb
 DAEMON_NAME=Radish::RadioServer
-DAEMON_LOG=/export/hda3/tmp/radishcache/RadioServer.log
+DAEMON_LOG=/var/cache/radish/RadioServer.log
 RADIO_SERVER_FLAGS=""
 # Sanity checks.
 [ -x $DAEMON_PATH ] || exit 1
